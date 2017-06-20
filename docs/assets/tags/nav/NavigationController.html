@@ -43,15 +43,19 @@
 
 <!-- Controller -->
 <script>
+// property
 var self = this
 var tagStack = []
+const events = ["oTransitionEnd","mozTransitionEnd","webkitTransitionEnd","transitionend"];
 
+// lifecycle of riot
 self.on("mount",function(){
     if ( self.opts.root != null ){
         pushViewController( self.opts.root )
     }
 })
 
+// public
 self.push = function( tagName, opts ){
     pushViewController( tagName, opts )
 }
@@ -60,11 +64,16 @@ self.pop = function(){
     popViewController()
 }
 
-const events = ["oTransitionEnd","mozTransitionEnd","webkitTransitionEnd","transitionend"];
+
+// private
 var pushViewController = function( tagName, opts ){
-    // create Element
+    
     var stack = document.getElementById("viewstack")
+
+    // create new viewcontroller's element
     var view = document.createElement("div")
+
+    // Add initial class
     view.classList.add("view")
     var isRoot = (stack.children.length == 0)
     if( isRoot ){
@@ -72,40 +81,46 @@ var pushViewController = function( tagName, opts ){
     }else{
         view.classList.add("above-view")
     }
-    // regist in ViewStack
+
+    // Add element in ViewStack
     stack.appendChild( view )
 
-    // mount tag for Element
-    view.setAttribute("data-is", tagName)
+    // Create opt
     var options = {}
     if ( opts instanceof Object ){ options = opts }
     options.navigationController = self
     options.nav = self
+
+    // Mount tag for element
+    view.setAttribute("data-is", tagName)
     let aboveTag = riot.mount( tagName, options )[0]
     if( aboveTag.didLoad ){ aboveTag.didLoad() }
     tagStack.push(aboveTag)
 
     if( !isRoot ){
+        // Call lifecycle function
         let belowTag = tagStack[tagStack.length - 1]
         if( aboveTag.willAppear ){ aboveTag.willAppear() }
         if( belowTag.willDisappear ){ belowTag.willDisappear() }
 
         setTimeout( function(){
+            // show above view
             view.classList.remove("above-view")
             view.classList.add("current-view")
 
-            // hide below view.
-            if ( stack.children.length > 1 ){
-                var belowView = stack.children[stack.children.length - 2]
-                belowView.classList.remove("current-view")
-                belowView.classList.add("below-view")
-            }
+            // hide current view
+            var belowView = stack.children[stack.children.length - 2]
+            belowView.classList.remove("current-view")
+            belowView.classList.add("below-view")
 
-            //handler of transition end
+            // Registerd listener of transition end
             events.map(function(elem){
                 Listener.add( view.className + "_" + elem, view, elem, function(){
+                    // Call lifecycle function
                     if( aboveTag.didAppear ) { aboveTag.didAppear() }
                     if( belowTag.didDisappear ){ belowTag.didDisappear() }
+
+                    // Unregisterd listener
                     events.map(function(elem){ Listener.remove( view.className + "_" + elem )} )
                 }, false);
             })
@@ -116,31 +131,39 @@ var pushViewController = function( tagName, opts ){
 var popViewController = function(){
     var views = document.getElementById("viewstack").children
     if( views.length > 1 ){
-        // remove view
+        // hide current view
         var view    = views[views.length - 1]
         view.classList.remove('current-view')
         view.classList.add('above-view');
 
+        // show below view
+        var belowView    = views[views.length-2]
+        belowView.classList.remove('below-view')
+        belowView.classList.add('current-view')
+
+        // Call lifecycle event
         var aboveTag = tagStack.pop()
         var belowTag = tagStack[tagStack.length - 1]
         if( belowTag.willAppear ) { belowTag.willAppear() }
         if( aboveTag.willDisappear ) { aboveTag.willDisappear() }
 
-        // handler of transition end
+        // Registerd listener of transition end
         events.map(function(elem){
             Listener.add( view.className + "_" + elem, view, elem, function(){
+                // Call lifecycle function
                 if( belowTag.didAppear ) { belowTag.didAppear() }
                 if( aboveTag.didDisappear ) { aboveTag.didDisappear() }
+
+                // Unmount above view tag
                 aboveTag.unmount()
+
+                // Unregisterd listener
                 events.map(function(elem){ Listener.remove( view.className + "_" + elem )})
+
+                // Remove element
                 view.remove()
             }, false);
         })
-        
-        // visible below view
-        var belowView    = views[views.length-2]
-        belowView.classList.remove('below-view')
-        belowView.classList.add('current-view')
     }
 }
 
