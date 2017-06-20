@@ -3,14 +3,4 @@
 <!-- View -->
 <navigationcontroller root="rootviewcontroller" />
 
-<!-- Controller -->
-<script>
-var self    = this
-
-self.on('mount', function() {
-
-})
-
-</script>
-
 </application>
