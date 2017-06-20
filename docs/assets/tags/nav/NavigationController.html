@@ -16,20 +16,24 @@
     position: fixed;
     left: 0;
     top: 0;
-    transition: -webkit-transform 0.3s cubic-bezier(0.465, 0.183, 0.153, 0.946);
     transition: transform 0.3s cubic-bezier(0.465, 0.183, 0.153, 0.946);
+    transition: -moz-transform 0.3s cubic-bezier(0.465, 0.183, 0.153, 0.946);
+    transition: -webkit-transform 0.3s cubic-bezier(0.465, 0.183, 0.153, 0.946);
 }
 .below-view{
-    -webkit-transform: translateX(-100%);
     transform: translateX(-100%);
+    -webkit-transform: translateX(-100%);
+    -moz-transform: translateX(-100%);
 }
 .current-view {
-    -webkit-transform: translateX(0%);
     transform: translateX(0%);
+    -webkit-transform: translateX(0%);
+    -moz-transform: translateX(0%);
 }
 .above-view {
-    -webkit-transform: translateX(100%);
     transform: translateX(100%);
+    -webkit-transform: translateX(100%);
+    -moz-transform: translateX(100%);
 }
 </style>
 
@@ -105,7 +109,7 @@ var pushViewController = function( tagName, opts ){
                     events.map(function(elem){ Listener.remove( view.className + "_" + elem )} )
                 }, false);
             })
-        },1)
+        },50)
     }
 }
 
