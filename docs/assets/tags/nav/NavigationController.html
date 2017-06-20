@@ -1,0 +1,168 @@
+<NavigationController>
+
+<style>
+#viewstack {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    box-sizing: border-box;
+    margin-top: 0;
+}
+.view {
+    will-change: transform;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    transition: -webkit-transform 0.3s cubic-bezier(0.465, 0.183, 0.153, 0.946);
+    transition: transform 0.3s cubic-bezier(0.465, 0.183, 0.153, 0.946);
+}
+.below-view{
+    -webkit-transform: translateX(-100%);
+    transform: translateX(-100%);
+}
+.current-view {
+    -webkit-transform: translateX(0%);
+    transform: translateX(0%);
+}
+.above-view {
+    -webkit-transform: translateX(100%);
+    transform: translateX(100%);
+}
+</style>
+
+<!-- View -->
+<div id="viewstack">
+</div>
+
+<!-- Controller -->
+<script>
+var self = this
+var tagStack = []
+
+self.on("mount",function(){
+    if ( self.opts.root != null ){
+        pushViewController( self.opts.root )
+    }
+})
+
+self.push = function( tagName, opts ){
+    pushViewController( tagName, opts )
+}
+
+self.pop = function(){
+    popViewController()
+}
+
+const events = ["oTransitionEnd","mozTransitionEnd","webkitTransitionEnd","transitionend"];
+var pushViewController = function( tagName, opts ){
+    // create Element
+    var stack = document.getElementById("viewstack")
+    var view = document.createElement("div")
+    view.classList.add("view")
+    var isRoot = (stack.children.length == 0)
+    if( isRoot ){
+        view.classList.add("current-view")
+    }else{
+        view.classList.add("above-view")
+    }
+    // regist in ViewStack
+    stack.appendChild( view )
+
+    // mount tag for Element
+    view.setAttribute("data-is", tagName)
+    var options = {}
+    if ( opts instanceof Object ){ options = opts }
+    options.navigationController = self
+    options.nav = self
+    let aboveTag = riot.mount( tagName, options )[0]
+    if( aboveTag.didLoad ){ aboveTag.didLoad() }
+    tagStack.push(aboveTag)
+
+    if( !isRoot ){
+        let belowTag = tagStack[tagStack.length - 1]
+        if( aboveTag.willAppear ){ aboveTag.willAppear() }
+        if( belowTag.willDisappear ){ belowTag.willDisappear() }
+
+        setTimeout( function(){
+            view.classList.remove("above-view")
+            view.classList.add("current-view")
+
+            // hide below view.
+            if ( stack.children.length > 1 ){
+                var belowView = stack.children[stack.children.length - 2]
+                belowView.classList.remove("current-view")
+                belowView.classList.add("below-view")
+            }
+
+            //handler of transition end
+            events.map(function(elem){
+                Listener.add( view.className + "_" + elem, view, elem, function(){
+                    if( aboveTag.didAppear ) { aboveTag.didAppear() }
+                    if( belowTag.didDisappear ){ belowTag.didDisappear() }
+                    events.map(function(elem){ Listener.remove( view.className + "_" + elem )} )
+                }, false);
+            })
+        },1)
+    }
+}
+
+var popViewController = function(){
+    var views = document.getElementById("viewstack").children
+    if( views.length > 1 ){
+        // remove view
+        var view    = views[views.length - 1]
+        view.classList.remove('current-view')
+        view.classList.add('above-view');
+
+        var aboveTag = tagStack.pop()
+        var belowTag = tagStack[tagStack.length - 1]
+        if( belowTag.willAppear ) { belowTag.willAppear() }
+        if( aboveTag.willDisappear ) { aboveTag.willDisappear() }
+
+        // handler of transition end
+        events.map(function(elem){
+            Listener.add( view.className + "_" + elem, view, elem, function(){
+                if( belowTag.didAppear ) { belowTag.didAppear() }
+                if( aboveTag.didDisappear ) { aboveTag.didDisappear() }
+                aboveTag.unmount()
+                events.map(function(elem){ Listener.remove( view.className + "_" + elem )})
+                view.remove()
+            }, false);
+        })
+        
+        // visible below view
+        var belowView    = views[views.length-2]
+        belowView.classList.remove('below-view')
+        belowView.classList.add('current-view')
+    }
+}
+
+var Listener = (function(){
+    listeners = {};
+
+    return {
+        add: function( id, element, event, handler, capture) {
+            //console.log("add " + id)
+            element.addEventListener(event, handler, capture);
+            listeners[id] = {element: element, 
+                             event: event, 
+                             handler: handler, 
+                             capture: capture};
+        },
+        remove: function(id) {
+            if(id in listeners) {
+                //console.log("remove "+ id)
+                var h = listeners[id];
+                h.element.removeEventListener(h.event, h.handler, h.capture);
+                delete listeners[id];
+            }
+        }
+    };
+}());
+
+</script>
+
+</NavigationController>
