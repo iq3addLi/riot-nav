@@ -17,29 +17,21 @@
     transition: transform 0.3s cubic-bezier(0.465, 0.183, 0.153, 0.946);
     transition: -moz-transform 0.3s cubic-bezier(0.465, 0.183, 0.153, 0.946);
     transition: -webkit-transform 0.3s cubic-bezier(0.465, 0.183, 0.153, 0.946);
-    transition: -ms-transition 0.3s cubic-bezier(0.465, 0.183, 0.153, 0.946);
-    transition: -o-transition 0.3s cubic-bezier(0.465, 0.183, 0.153, 0.946);
 }
 .below-view{
     transform: translateX(-100%);
     -webkit-transform: translateX(-100%);
     -moz-transform: translateX(-100%);
-    -ms-transform: translateX(-100%);
-    -o-transform: translateX(-100%);
 }
 .current-view {
     transform: translateX(0%);
     -webkit-transform: translateX(0%);
     -moz-transform: translateX(0%);
-    -ms-transform: translateX(0%);
-    -o-transform: translateX(0%);
 }
 .above-view {
     transform: translateX(100%);
     -webkit-transform: translateX(100%);
     -moz-transform: translateX(100%);
-    -ms-transform: translateX(100%);
-    -o-transform: translateX(100%);
 }
 </style>
 
