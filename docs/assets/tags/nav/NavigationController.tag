@@ -13,9 +13,7 @@
     will-change: transform;
     width: 100%;
     height: 100%;
-    position: fixed;
-    left: 0;
-    top: 0;
+    position: absolute;
     transition: transform 0.3s cubic-bezier(0.465, 0.183, 0.153, 0.946);
     transition: -moz-transform 0.3s cubic-bezier(0.465, 0.183, 0.153, 0.946);
     transition: -webkit-transform 0.3s cubic-bezier(0.465, 0.183, 0.153, 0.946);
@@ -54,7 +52,7 @@
 // property
 var self = this
 var tagStack = []
-const events = ["oTransitionEnd","mozTransitionEnd","webkitTransitionEnd","transitionend"];
+const events = ["oTransitionEnd","mozTransitionEnd","webkitTransitionEnd","msTransitionEnd","transitionend"];
 
 // lifecycle of riot
 self.on("mount",function(){
@@ -107,7 +105,7 @@ var pushViewController = function( tagName, opts ){
 
     if( !isRoot ){
         // Call lifecycle function
-        let belowTag = tagStack[tagStack.length - 1]
+        let belowTag = tagStack[tagStack.length - 2]
         if( aboveTag.willAppear ){ aboveTag.willAppear() }
         if( belowTag.willDisappear ){ belowTag.willDisappear() }
 
@@ -145,7 +143,7 @@ var popViewController = function(){
         view.classList.add('above-view');
 
         // show below view
-        var belowView    = views[views.length-2]
+        var belowView    = views[views.length - 2]
         belowView.classList.remove('below-view')
         belowView.classList.add('current-view')
 
