@@ -1,3 +1,14 @@
+<!--
+/*!
+ * iOS UINavigationController likes view stack manager for riot.js
+ * https://github.com/iq3addLi/riot-nav
+ *
+ * Copyright +Li, Inc.
+ * Released under the MIT license
+ * https://github.com/iq3addLi/riot-nav/blob/master/LICENSE
+ *
+ */
+-->
 <NavigationController>
 
 <style>
@@ -52,6 +63,11 @@ self.on("mount",function(){
         pushViewController( self.opts.root )
     }
 })
+
+self.on("unmount",function(){
+    tagStack.map( function( tag ){ tag.unmount() })
+})
+
 
 // public
 self.push = function( tagName, opts ){
