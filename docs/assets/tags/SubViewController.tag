@@ -4,8 +4,7 @@
     width: 100%;
     height: 100%;
     background-color: aquamarine;
-    margin:0;
-    padding:1px;
+    position: absolute;
 }
 </style>
 

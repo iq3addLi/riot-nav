@@ -1,6 +1,6 @@
 <!--
 /*!
- * iOS UINavigationController likes view stack manager for riot.js
+ * View stack manager for riot.js like UINavigationController in iOS
  * https://github.com/iq3addLi/riot-nav
  *
  * Copyright +Li, Inc.
@@ -15,16 +15,15 @@
 #viewstack {
     width: 100%;
     height: 100%;
-    overflow: hidden;
     position: relative;
+    overflow: hidden;
     box-sizing: border-box;
-    margin-top: 0;
 }
 .view {
-    will-change: transform;
     width: 100%;
     height: 100%;
     position: absolute;
+    will-change: transform;
     transition: transform 0.3s cubic-bezier(0.465, 0.183, 0.153, 0.946);
     transition: -moz-transform 0.3s cubic-bezier(0.465, 0.183, 0.153, 0.946);
     transition: -webkit-transform 0.3s cubic-bezier(0.465, 0.183, 0.153, 0.946);

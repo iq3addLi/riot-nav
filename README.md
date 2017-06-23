@@ -1,5 +1,5 @@
 # riot-nav
-iOS UINavigationController like view stack manager by riot.js.
+View stack manager for riot.js like UINavigationController in iOS.
 
 Checked:Safari 10.1.1, FireFox 52.0.2, Chrome 58.0.3029.110 on MacOSX Sierra.
 Not worked:IE11 on Win8.1
