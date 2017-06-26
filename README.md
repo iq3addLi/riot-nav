@@ -36,12 +36,12 @@ opts.navigationController // Familiar to iOS engineers
 
 ### push
 ```js
-nav( tagName, opts )
+nav.push( tagName, opts )
 ```
 
 ### pop
 ```js
-nav()
+nav.pop()
 ```
 
 ## Lifecycle
