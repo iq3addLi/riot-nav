@@ -5,8 +5,8 @@ SPA development using riot.js is almost the same as iOS development.
 When I looked like this, I wanted to do view management like iOS, so I tried making it.😎
 
 ## Check list
-|Name|Version|OS|Result|
-|:---|:---|:---|:---|
+|Browser|Version|OS|Result|
+|:---|:---|:---|:---:|
 |Safari|10.1.1|MacOSX Sierra|◯|
 |FireFox|52.0.2|MacOSX Sierra|◯|
 |Chrome|58.0.3029.110|MacOSX Sierra|◯|
