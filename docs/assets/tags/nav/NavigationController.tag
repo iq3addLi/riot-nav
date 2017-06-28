@@ -51,12 +51,18 @@
 
 <!-- Controller -->
 <script>
-// property
+
+// -----------
+// private properties
+// -----------
 var self = this
 var tagStack = []
-const events = ["oTransitionEnd","mozTransitionEnd","webkitTransitionEnd","msTransitionEnd","transitionend"];
+var events = ["oTransitionEnd","mozTransitionEnd","webkitTransitionEnd","msTransitionEnd","transitionend"];
 
+
+// -----------
 // lifecycle of riot
+// -----------
 self.on("mount",function(){
     if ( self.opts.root != null ){
         pushViewController( self.opts.root )
@@ -68,17 +74,48 @@ self.on("unmount",function(){
 })
 
 
+// -----------
 // public
-self.push = function( tagName, opts ){
-    pushViewController( tagName, opts )
+// -----------
+var navigationControllerPublic = {
+
+    /*!
+     pushViewController in UINavigationController
+     @param {Object} tagName - Tag name to display.
+     @param {Object} opts - Object to hand over to tag.
+    */
+    push : function( tagName, opts ){
+        pushViewController( tagName, opts )
+    },
+
+    /*!
+     popViewController in UINavigationController
+    */
+    pop : function(){
+        popViewController()
+    },
+
+    /*!
+     viewControllers in UINavigationController
+     @return {Object[]} riot tags.
+    */
+    tags : function(){
+        return tagStack
+    },
+
+    /*!
+     topViewController in UINavigationController
+     @return {Object} top of riot tag in stack.
+    */
+    topTag : function(){
+        return tagStack[tagStack.length - 1]
+    }
 }
 
-self.pop = function(){
-    popViewController()
-}
 
-
+// -----------
 // private
+// -----------
 var pushViewController = function( tagName, opts ){
     
     var stack = document.getElementById("viewstack")
@@ -101,8 +138,8 @@ var pushViewController = function( tagName, opts ){
     // Create opt
     var options = {}
     if ( opts instanceof Object ){ options = opts }
-    options.navigationController = self
-    options.nav = self
+    options.navigationController = navigationControllerPublic
+    options.nav = navigationControllerPublic
 
     // Mount tag for element
     view.setAttribute("data-is", tagName)

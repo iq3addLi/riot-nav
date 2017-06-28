@@ -12,6 +12,7 @@
 <div id="body">
     <h1>This view is EndViewController</h1>
     <button onclick={ popView }>back</button>
+    <button onclick={ rootViewUpdate }>rootViewUpdate</button>
 </div>
 
 <!-- Controller -->
@@ -47,6 +48,10 @@ self.didDisappear = function(){
 
 self.popView = function(){
     self.opts.navigationController.pop()
+}
+
+self.rootViewUpdate = function(){
+    self.opts.nav.tags()[0].updateLabel()
 }
 
 </script>
