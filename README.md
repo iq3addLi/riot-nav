@@ -58,10 +58,8 @@ didDisappear
 Demo page is [here](https://iq3addli.github.io/riot-nav/index.html)
 
 ## Future plans
-* Providing a means to access the previous tag with nav
 * Add transition choice
 * Providing a means for setting custom transitions
-* Make riot-tab (like UITabBarController). I want to keep the view state.
 * Make it available at npm
 
 Thank you for using! 😄

@@ -11,40 +11,6 @@
 -->
 <NavigationController>
 
-<style>
-#viewstack {
-    width: 100%;
-    height: 100%;
-    position: relative;
-    overflow: hidden;
-    box-sizing: border-box;
-}
-.view {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    will-change: transform;
-    transition: transform 0.3s cubic-bezier(0.465, 0.183, 0.153, 0.946);
-    transition: -moz-transform 0.3s cubic-bezier(0.465, 0.183, 0.153, 0.946);
-    transition: -webkit-transform 0.3s cubic-bezier(0.465, 0.183, 0.153, 0.946);
-}
-.below-view{
-    transform: translateX(-100%);
-    -webkit-transform: translateX(-100%);
-    -moz-transform: translateX(-100%);
-}
-.current-view {
-    transform: translateX(0%);
-    -webkit-transform: translateX(0%);
-    -moz-transform: translateX(0%);
-}
-.above-view {
-    transform: translateX(100%);
-    -webkit-transform: translateX(100%);
-    -moz-transform: translateX(100%);
-}
-</style>
-
 <!-- View -->
 <div id="viewstack">
 </div>
@@ -241,5 +207,40 @@ var Listener = (function(){
 }());
 
 </script>
+
+<!-- Styles -->
+<style>
+#viewstack {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+.view {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    will-change: transform;
+    transition: transform 0.3s cubic-bezier(0.465, 0.183, 0.153, 0.946);
+    transition: -moz-transform 0.3s cubic-bezier(0.465, 0.183, 0.153, 0.946);
+    transition: -webkit-transform 0.3s cubic-bezier(0.465, 0.183, 0.153, 0.946);
+}
+.below-view{
+    transform: translateX(-100%);
+    -webkit-transform: translateX(-100%);
+    -moz-transform: translateX(-100%);
+}
+.current-view {
+    transform: translateX(0%);
+    -webkit-transform: translateX(0%);
+    -moz-transform: translateX(0%);
+}
+.above-view {
+    transform: translateX(100%);
+    -webkit-transform: translateX(100%);
+    -moz-transform: translateX(100%);
+}
+</style>
 
 </NavigationController>
