@@ -51,7 +51,7 @@ self.popView = function(){
 }
 
 self.rootViewUpdate = function(){
-    self.opts.nav.tags()[0].updateLabel()
+    self.opts.nav.viewTags()[0].updateLabel()
 }
 
 </script>
