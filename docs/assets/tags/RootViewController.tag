@@ -1,6 +1,6 @@
 <RootViewController>
 <style>
-#body{
+.body{
     width: 100%;
     height: 100%;
     background-color: burlywood;
@@ -9,7 +9,7 @@
 </style>
 
 <!-- View -->
-<div id="body">
+<div class="body">
     <h1>This view is RootViewController</h1>
     <button onclick={ pushView }>next</button>
     <button onclick={ popView }>back</button>

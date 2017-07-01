@@ -1,6 +1,6 @@
 <EndViewController>
 <style>
-#body{
+.body{
     width: 100%;
     height: 100%;
     background-color: azure;
@@ -9,7 +9,7 @@
 </style>
 
 <!-- View -->
-<div id="body">
+<div class="body">
     <h1>This view is EndViewController</h1>
     <button onclick={ popView }>back</button>
     <button onclick={ rootViewUpdate }>rootViewUpdate</button>
