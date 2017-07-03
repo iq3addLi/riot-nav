@@ -1,0 +1,31 @@
+{
+  "name": "riot-nav",
+  "version": "0.2.0",
+  "description": "Manages the navigation of hierarchical content for riot.js like UINavigationController in iOS.",
+  "files": [
+    "dist"
+  ],
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iq3addLi/riot-nav.git"
+  },
+  "keywords": [
+    "riot",
+    "riotjs",
+    "single-page-applications",
+    "minimal",
+    "manages-the-navigation"
+  ],
+  "author": "iq3+Li",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/iq3addLi/riot-nav/issues"
+  },
+  "homepage": "https://github.com/iq3addLi/riot-nav#readme"
+}

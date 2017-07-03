@@ -1,6 +1,8 @@
 # riot-nav
 View stack manager for riot.js like UINavigationController in iOS.
 
+<a href="https://www.npmjs.com/package/riot-nav"><img src="https://img.shields.io/npm/v/riot-nav.svg?style=shield"></a>
+
 SPA development using riot.js is almost the same as iOS development.
 When I looked like this, I wanted to do view management like iOS, so I tried making it.😎
 
@@ -60,6 +62,5 @@ didDisappear
 ## Future plans
 * Add transition choice
 * Providing a means for setting custom transitions
-* Make it available at npm
 
 Thank you for using! 😄
