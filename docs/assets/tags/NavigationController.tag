@@ -31,7 +31,9 @@ var nav_id = undefined
 // -----------
 self.on("mount",function(){
     if ( self.opts.root != null ){
-        console.log(self.opts.opts)
+        if( self.opts.animation ){
+            currentTransition = "riot-nav-transition-" + self.opts.animation
+        }
         pushViewController( self.opts.root, self.opts.opts )
     }
 })
@@ -86,9 +88,27 @@ self.uniqueID = function(){
     return nav_id
 }
 
+// implemented delegate of riot-tab
+self.shouldSelect = function(){
+    var tag = self.topViewTag()
+    if( tag.shouldSelect ){
+        return tag.shouldSelect()
+    }
+    return true
+}
+
+self.didSelect = function(){
+    var tag = self.topViewTag()
+    if( tag.didSelect ){
+        tag.didSelect()
+    }
+}
+
 // -----------
 // private
 // -----------
+var currentTransition = "riot-nav-transition-slide"
+
 var pushViewController = function( tagName, tagOption ){
     var stack = document.getElementById(self.uniqueID())
 
@@ -98,11 +118,12 @@ var pushViewController = function( tagName, tagOption ){
 
     // Add initial class
     view.classList.add("riot-nav-view")
+    view.classList.add( currentTransition )
     var isRoot = ( stack.children.length == 0 )
     if( isRoot ){
-        view.classList.add("riot-nav-current-view")
+        view.classList.add( currentTransition + "-current")
     }else{
-        view.classList.add("riot-nav-above-view")
+        view.classList.add( currentTransition + "-above")
     }
 
     // Add element in ViewStack
@@ -128,13 +149,13 @@ var pushViewController = function( tagName, tagOption ){
 
         setTimeout( function(){
             // show above view
-            view.classList.remove("riot-nav-above-view")
-            view.classList.add("riot-nav-current-view")
+            view.classList.remove( currentTransition + "-above")
+            view.classList.add( currentTransition + "-current")
 
             // hide current view
             var belowView = stack.children[stack.children.length - 2]
-            belowView.classList.remove("riot-nav-current-view")
-            belowView.classList.add("riot-nav-below-view")
+            belowView.classList.remove( currentTransition + "-current")
+            belowView.classList.add( currentTransition + "-below")
 
             // Registerd listener of transition end
             events.map(function(elem){
@@ -156,13 +177,13 @@ var popViewController = function(){
     if( views.length > 1 ){
         // hide current view
         var view    = views[views.length - 1]
-        view.classList.remove('riot-nav-current-view')
-        view.classList.add('riot-nav-above-view');
+        view.classList.remove( currentTransition + "-current")
+        view.classList.add( currentTransition + "-above");
 
         // show below view
         var belowView    = views[views.length - 2]
-        belowView.classList.remove('riot-nav-below-view')
-        belowView.classList.add('riot-nav-current-view')
+        belowView.classList.remove( currentTransition + "-below" )
+        belowView.classList.add( currentTransition + "-current")
 
         // Call lifecycle event
         var aboveTag = tagStack.pop()
@@ -195,7 +216,6 @@ var Listener = (function(){
 
     return {
         add: function( id, element, event, handler, capture) {
-            //console.log("add " + id)
             element.addEventListener(event, handler, capture);
             listeners[id] = {element: element, 
                              event: event, 
@@ -204,7 +224,6 @@ var Listener = (function(){
         },
         remove: function(id) {
             if(id in listeners) {
-                //console.log("remove "+ id)
                 var h = listeners[id];
                 h.element.removeEventListener(h.event, h.handler, h.capture);
                 delete listeners[id];
@@ -224,6 +243,7 @@ var uuidv4 = function() {
 
 <!-- Styles -->
 <style>
+
 .riot-nav-viewstack {
     width: 100%;
     height: 100%;
@@ -235,26 +255,70 @@ var uuidv4 = function() {
     width: 100%;
     height: 100%;
     position: absolute;
+}
+
+
+.riot-nav-transition-slide{
     will-change: transform;
     transition: transform 0.3s cubic-bezier(0.465, 0.183, 0.153, 0.946);
     transition: -moz-transform 0.3s cubic-bezier(0.465, 0.183, 0.153, 0.946);
     transition: -webkit-transform 0.3s cubic-bezier(0.465, 0.183, 0.153, 0.946);
 }
-.riot-nav-below-view{
+.riot-nav-transition-slide-below{
     transform: translateX(-100%);
     -webkit-transform: translateX(-100%);
     -moz-transform: translateX(-100%);
 }
-.riot-nav-current-view {
+.riot-nav-transition-slide-current {
     transform: translateX(0%);
     -webkit-transform: translateX(0%);
     -moz-transform: translateX(0%);
 }
-.riot-nav-above-view {
+.riot-nav-transition-slide-above {
     transform: translateX(100%);
     -webkit-transform: translateX(100%);
     -moz-transform: translateX(100%);
 }
+
+.riot-nav-transition-fade{
+    transition: all 0.5s;
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    -ms-transition: all 0.5s;
+    -o-transition: all 0.5s;
+}
+.riot-nav-transition-fade-below{
+    opacity: 0
+}
+.riot-nav-transition-fade-current {
+    opacity: 1
+}
+.riot-nav-transition-fade-above {
+    opacity: 0
+}
+
+.riot-nav-transition-modal{
+    will-change: transform;
+    transition: transform 0.3s cubic-bezier(0.465, 0.183, 0.153, 0.946);
+    transition: -moz-transform 0.3s cubic-bezier(0.465, 0.183, 0.153, 0.946);
+    transition: -webkit-transform 0.3s cubic-bezier(0.465, 0.183, 0.153, 0.946);
+}
+.riot-nav-transition-modal-below{
+    transform: translateY(0%);
+    -webkit-transform: translateY(0%);
+    -moz-transform: translateY(0%);
+}
+.riot-nav-transition-modal-current {
+    transform: translateY(0%);
+    -webkit-transform: translateY(0%);
+    -moz-transform: translateY(0%);
+}
+.riot-nav-transition-modal-above {
+    transform: translateY(100%);
+    -webkit-transform: translateY(100%);
+    -moz-transform: translateY(100%);
+}
+
 </style>
 
 </NavigationController>

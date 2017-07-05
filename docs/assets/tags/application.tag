@@ -1,6 +1,6 @@
 <application>
     
 <!-- View -->
-<navigationcontroller root="rootviewcontroller" />
+<navigationcontroller root="rootviewcontroller" animation="slide"/>
 
 </application>
