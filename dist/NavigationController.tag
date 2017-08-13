@@ -31,9 +31,11 @@ var nav_id = undefined
 // -----------
 self.on("mount",function(){
     if ( self.opts.root != null ){
-        if( self.opts.animation ){
-            currentTransition = "riot-nav-transition-" + self.opts.animation
-        }
+        
+        currentTransition = self.opts.animation ?
+            "riot-nav-transition-" + self.opts.animation : 
+            "riot-nav-transition-slide"
+
         pushViewController( self.opts.root, self.opts.opts )
     }
 })
@@ -212,7 +214,7 @@ var popViewController = function(){
 }
 
 var Listener = (function(){
-    listeners = {};
+    var listeners = {};
 
     return {
         add: function( id, element, event, handler, capture) {
