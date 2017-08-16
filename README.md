@@ -1,5 +1,5 @@
 # riot-nav
-View stack manager for riot.js like UINavigationController in iOS.
+Manages the navigation of hierarchical content for riot.js like UINavigationController in iOS.
 
 <a href="https://www.npmjs.com/package/riot-nav"><img src="https://img.shields.io/npm/v/riot-nav.svg?style=shield"></a>
 
