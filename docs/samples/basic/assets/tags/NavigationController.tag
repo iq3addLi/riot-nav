@@ -106,6 +106,13 @@ self.didSelect = function(){
     }
 }
 
+self.didDeselect = function(){
+    var tag = self.topViewTag()
+    if( tag.didDeselect ){
+        tag.didDeselect()
+    }
+}
+
 // -----------
 // private
 // -----------
