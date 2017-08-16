@@ -6,6 +6,11 @@ View stack manager for riot.js like UINavigationController in iOS.
 SPA development using riot.js is almost the same as iOS development.
 When I looked like this, I wanted to do view management like iOS, so I tried making it.😎
 
+Although it is a reference, the following points are different.
+
+* Do not include UI.
+* Add methods I wanted for iOS version.
+
 ## How to use
 
 ### import tag
